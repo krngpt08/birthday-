@@ -8,20 +8,26 @@
 
 body{
 margin:0;
-background:#0f0f0f;
 font-family:Arial;
-color:white;
 text-align:center;
+color:white;
 overflow:hidden;
+background:linear-gradient(270deg,#0f0f0f,#1a1a40,#000000);
+background-size:600% 600%;
+animation:bgMove 10s infinite alternate;
 }
 
-#start{
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+100%{background-position:100% 50%;}
+}
+
+#countdown{
 position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-font-size:28px;
-cursor:pointer;
+font-size:70px;
 }
 
 #content{
@@ -29,40 +35,47 @@ display:none;
 padding-top:40px;
 }
 
-h1{
+#title{
 font-size:40px;
-animation:fadeIn 2s ease-in-out;
+text-shadow:0 0 20px #ff4d6d;
 }
 
-img{
-width:220px;
-border-radius:12px;
-margin-top:15px;
+.photo{
+width:260px;
+max-width:90%;
+border-radius:15px;
+margin-top:20px;
+box-shadow:0 0 30px rgba(255,255,255,0.4);
+opacity:0;
+animation:fadePhoto 3s forwards;
+}
+
+@keyframes fadePhoto{
+to{opacity:1;}
 }
 
 #cake{
-font-size:80px;
-margin-top:20px;
+font-size:90px;
+margin-top:25px;
 cursor:pointer;
+transition:transform 0.3s;
+}
+
+#cake:hover{
+transform:scale(1.2);
 }
 
 #message{
 margin-top:20px;
 font-size:20px;
 width:80%;
-margin-left:auto;
-margin-right:auto;
+margin:auto;
 display:none;
 }
 
 iframe{
 margin-top:20px;
 display:none;
-}
-
-@keyframes fadeIn{
-0%{opacity:0; transform:translateY(-20px);}
-100%{opacity:1; transform:translateY(0);}
 }
 
 /* fireworks */
@@ -78,7 +91,36 @@ animation:explode 1s linear infinite;
 
 @keyframes explode{
 0%{transform:scale(0);}
-100%{transform:scale(10); opacity:0;}
+100%{transform:scale(12);opacity:0;}
+}
+
+/* balloons */
+
+.balloon{
+position:absolute;
+bottom:-100px;
+font-size:35px;
+animation:rise 8s linear infinite;
+}
+
+@keyframes rise{
+0%{transform:translateY(0);}
+100%{transform:translateY(-120vh);}
+}
+
+/* confetti */
+
+.confetti{
+position:absolute;
+width:8px;
+height:8px;
+background:red;
+animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+0%{transform:translateY(-10vh) rotate(0);}
+100%{transform:translateY(100vh) rotate(360deg);}
 }
 
 </style>
@@ -86,15 +128,13 @@ animation:explode 1s linear infinite;
 
 <body>
 
-<div id="start" onclick="startSurprise()">
-Tap for Surprise 🎁
-</div>
+<div id="countdown">3</div>
 
 <div id="content">
 
-<h1>Happy Birthday Riya</h1>
+<h1 id="title"></h1>
 
-<img src="https://i.ibb.co/8DS0GRCL/image.jpg">
+<img src="YOUR_IMAGE_LINK_HERE" class="photo">
 
 <div id="cake" onclick="cutCake()">🎂</div>
 
@@ -104,23 +144,50 @@ Happy Birthday to the my Dearest Best friend. ....the only subscriber of a versi
 
 <iframe id="song" width="260" height="150"
 src="https://www.youtube.com/embed/RbiJXZl2pN0?autoplay=1"
-allow="autoplay">
-</iframe>
+allow="autoplay"></iframe>
 
 </div>
 
 <script>
 
-function startSurprise(){
-document.getElementById("start").style.display="none";
+let count=3;
+
+let timer=setInterval(()=>{
+count--;
+document.getElementById("countdown").innerHTML=count;
+
+if(count==0){
+clearInterval(timer);
+document.getElementById("countdown").style.display="none";
 document.getElementById("content").style.display="block";
+
 startFireworks();
+startBalloons();
+typeTitle();
+}
+
+},1000);
+
+function typeTitle(){
+let text="Happy Birthday Riya";
+let i=0;
+
+function typing(){
+if(i<text.length){
+document.getElementById("title").innerHTML+=text.charAt(i);
+i++;
+setTimeout(typing,100);
+}
+}
+
+typing();
 }
 
 function cutCake(){
 document.getElementById("cake").innerHTML="🍰";
 document.getElementById("message").style.display="block";
 document.getElementById("song").style.display="block";
+confettiBurst();
 }
 
 function startFireworks(){
@@ -131,14 +198,37 @@ fw.style.left=Math.random()*100+"vw";
 fw.style.top=Math.random()*100+"vh";
 document.body.appendChild(fw);
 
-setTimeout(()=>{
-fw.remove();
-},1000);
+setTimeout(()=>{fw.remove()},1000);
 
 },200);
+}
+
+function startBalloons(){
+setInterval(()=>{
+let b=document.createElement("div");
+b.className="balloon";
+b.innerHTML="🎈";
+b.style.left=Math.random()*100+"vw";
+document.body.appendChild(b);
+
+setTimeout(()=>{b.remove()},8000);
+
+},1500);
+}
+
+function confettiBurst(){
+for(let i=0;i<80;i++){
+let c=document.createElement("div");
+c.className="confetti";
+c.style.left=Math.random()*100+"vw";
+c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+document.body.appendChild(c);
+
+setTimeout(()=>{c.remove()},3000);
+}
 }
 
 </script>
 
 </body>
-  </html>
+</html>
