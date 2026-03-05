@@ -2,125 +2,83 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Surprise</title>
+<title>For Riya</title>
 
 <style>
 
 body{
 margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
 font-family:Arial;
-text-align:center;
+background:radial-gradient(circle at top,#1a1a40,#000);
 color:white;
 overflow:hidden;
-background:linear-gradient(270deg,#0f0f0f,#1a1a40,#000000);
-background-size:600% 600%;
-animation:bgMove 10s infinite alternate;
 }
 
-@keyframes bgMove{
-0%{background-position:0% 50%;}
-100%{background-position:100% 50%;}
+/* card */
+
+.card{
+width:320px;
+padding:30px;
+border-radius:18px;
+backdrop-filter:blur(10px);
+background:rgba(255,255,255,0.08);
+box-shadow:0 0 40px rgba(0,0,0,0.6);
+text-align:center;
 }
 
-#countdown{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:70px;
-}
-
-#content{
-display:none;
-padding-top:40px;
-}
+/* title */
 
 #title{
-font-size:40px;
-text-shadow:0 0 20px #ff4d6d;
-}
-
-.photo{
-width:260px;
-max-width:90%;
-border-radius:15px;
-margin-top:20px;
-box-shadow:0 0 30px rgba(255,255,255,0.4);
+font-size:34px;
+letter-spacing:2px;
 opacity:0;
-animation:fadePhoto 3s forwards;
+animation:fadeTitle 2s forwards;
 }
 
-@keyframes fadePhoto{
+@keyframes fadeTitle{
 to{opacity:1;}
 }
 
-#cake{
-font-size:90px;
-margin-top:25px;
-cursor:pointer;
-transition:transform 0.3s;
+/* photo */
+
+.photo{
+width:240px;
+border-radius:14px;
+margin-top:20px;
+filter:blur(8px);
+animation:clearPhoto 2.5s forwards;
 }
 
-#cake:hover{
-transform:scale(1.2);
+@keyframes clearPhoto{
+to{filter:blur(0);}
+}
+
+/* cake button */
+
+#cake{
+margin-top:25px;
+padding:10px 18px;
+border-radius:10px;
+background:#ff4d6d;
+cursor:pointer;
+display:inline-block;
+font-size:18px;
 }
 
 #message{
 margin-top:20px;
-font-size:20px;
-width:80%;
-margin:auto;
 display:none;
+font-size:18px;
+line-height:1.6;
 }
 
 iframe{
-margin-top:20px;
+margin-top:15px;
 display:none;
-}
-
-/* fireworks */
-
-.firework{
-position:absolute;
-width:6px;
-height:6px;
-background:white;
-border-radius:50%;
-animation:explode 1s linear infinite;
-}
-
-@keyframes explode{
-0%{transform:scale(0);}
-100%{transform:scale(12);opacity:0;}
-}
-
-/* balloons */
-
-.balloon{
-position:absolute;
-bottom:-100px;
-font-size:35px;
-animation:rise 8s linear infinite;
-}
-
-@keyframes rise{
-0%{transform:translateY(0);}
-100%{transform:translateY(-120vh);}
-}
-
-/* confetti */
-
-.confetti{
-position:absolute;
-width:8px;
-height:8px;
-background:red;
-animation:fall 3s linear forwards;
-}
-
-@keyframes fall{
-0%{transform:translateY(-10vh) rotate(0);}
-100%{transform:translateY(100vh) rotate(360deg);}
 }
 
 </style>
@@ -128,104 +86,34 @@ animation:fall 3s linear forwards;
 
 <body>
 
-<div id="countdown">3</div>
+<div class="card">
 
-<div id="content">
-
-<h1 id="title"></h1>
+<div id="title">Happy Birthday Riya</div>
 
 <img src="YOUR_IMAGE_LINK_HERE" class="photo">
 
-<div id="cake" onclick="cutCake()">🎂</div>
+<div id="cake" onclick="cutCake()">Cut the Cake</div>
 
 <div id="message">
 Happy Birthday to the my Dearest Best friend. ....the only subscriber of a version of me that exists only for you...🙃
 </div>
 
-<iframe id="song" width="260" height="150"
+<iframe id="song"
+width="250"
+height="140"
 src="https://www.youtube.com/embed/RbiJXZl2pN0?autoplay=1"
-allow="autoplay"></iframe>
+allow="autoplay">
+</iframe>
 
 </div>
 
 <script>
 
-let count=3;
-
-let timer=setInterval(()=>{
-count--;
-document.getElementById("countdown").innerHTML=count;
-
-if(count==0){
-clearInterval(timer);
-document.getElementById("countdown").style.display="none";
-document.getElementById("content").style.display="block";
-
-startFireworks();
-startBalloons();
-typeTitle();
-}
-
-},1000);
-
-function typeTitle(){
-let text="Happy Birthday Riya";
-let i=0;
-
-function typing(){
-if(i<text.length){
-document.getElementById("title").innerHTML+=text.charAt(i);
-i++;
-setTimeout(typing,100);
-}
-}
-
-typing();
-}
-
 function cutCake(){
-document.getElementById("cake").innerHTML="🍰";
+
 document.getElementById("message").style.display="block";
 document.getElementById("song").style.display="block";
-confettiBurst();
-}
 
-function startFireworks(){
-setInterval(()=>{
-let fw=document.createElement("div");
-fw.className="firework";
-fw.style.left=Math.random()*100+"vw";
-fw.style.top=Math.random()*100+"vh";
-document.body.appendChild(fw);
-
-setTimeout(()=>{fw.remove()},1000);
-
-},200);
-}
-
-function startBalloons(){
-setInterval(()=>{
-let b=document.createElement("div");
-b.className="balloon";
-b.innerHTML="🎈";
-b.style.left=Math.random()*100+"vw";
-document.body.appendChild(b);
-
-setTimeout(()=>{b.remove()},8000);
-
-},1500);
-}
-
-function confettiBurst(){
-for(let i=0;i<80;i++){
-let c=document.createElement("div");
-c.className="confetti";
-c.style.left=Math.random()*100+"vw";
-c.style.background=`hsl(${Math.random()*360},100%,50%)`;
-document.body.appendChild(c);
-
-setTimeout(()=>{c.remove()},3000);
-}
 }
 
 </script>
